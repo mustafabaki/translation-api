@@ -17,3 +17,7 @@ def detection(text: str):
     DetectorFactory.seed = 0
     lang = detect(text)
     return {"detection": lang}
+
+@app.get("/ping")
+def ping():
+    return {"message": "success"}
