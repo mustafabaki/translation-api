@@ -1,14 +1,19 @@
-from typing import Optional
-
+from deep_translator import GoogleTranslator
 from fastapi import FastAPI
+from langdetect import detect, DetectorFactory
 
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.get("/translate")
+def translation(text: str, target: str, source: str = "auto"):
+    translated = GoogleTranslator(source=source, target=target).translate(
+        text)
+    return {"translation": translated}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+
+@app.get("/detect")
+def detection(text: str):
+    DetectorFactory.seed = 0
+    lang = detect(text)
+    return {"detection": lang}
