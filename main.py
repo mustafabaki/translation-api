@@ -18,6 +18,12 @@ def detection(text: str):
     lang = detect(text)
     return {"detection": lang}
 
+
+@app.get("/languages")
+def supported_languages():
+    return {"languages": GoogleTranslator().get_supported_languages(as_dict=True)}
+
+
 @app.get("/ping")
 def ping():
     return {"message": "success"}
